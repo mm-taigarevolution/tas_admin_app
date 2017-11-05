@@ -15,11 +15,6 @@ const cardStyle = {
  maxWidth: '100%'
 };
 
-const containerStyle = {
-  margin: '0px',
-  padding: '0px'
-};
-
 const buttonStyle = {
  margin: '10px 0px',
  display: 'flex',
@@ -82,7 +77,7 @@ const AuthenticationControl = ({isBusy, errorOccurred, loginEnabled, onUserNameC
           }
           {!isBusy &&
             errorOccurred &&
-            <p style={warningStyle}>Login failed. Please re-check your credentials.</p>
+            <p style={warningStyle}>Authentication failed. Please re-check your credentials.</p>
           }
         </CardFooter>
       </Card>
@@ -92,6 +87,7 @@ const AuthenticationControl = ({isBusy, errorOccurred, loginEnabled, onUserNameC
 
 AuthenticationControl.propTypes = {
   isBusy: PropTypes.bool.isRequired,
+  errorOccurred: PropTypes.bool.isRequired,
   loginEnabled: PropTypes.bool.isRequired,
   onUserNameChanged: PropTypes.func.isRequired,
   onPasswordChanged: PropTypes.func.isRequired,

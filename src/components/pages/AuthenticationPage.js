@@ -31,7 +31,7 @@ class AuthenticationPage extends React.Component {
         let userName = nextProps.admin.firstName + ' ' + nextProps.admin.lastName;
         toastr.success('Welcome, ' + userName +'!');
 
-        this.context.router.history.push('/Main');
+        this.context.router.history.push('/main');
         this.setState({loginBusy: false});
       }
     }
@@ -98,7 +98,7 @@ AuthenticationPage.contextTypes = {
 // Called every time state changes in the store
 // This will trigger componentWillReceiveProps for setting the props to component's state
 //
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     admin: state.admin,
     isBusy: state.busy.isBusy,

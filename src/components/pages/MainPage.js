@@ -4,8 +4,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as adminActions from '../../actions/adminActions';
 import TitleBarControl from '../controls/stateless/TitleBarControl';
+import MainOptionsControl from '../controls/stateless/MainOptionsControl';
 import {ThreeBounce} from 'better-react-spinkit';
 import {toastr} from 'react-redux-toastr';
+import {MainOptions} from '../../common/enumerations';
 
 const containerStyle = {
   margin: '15px 0px',
@@ -26,7 +28,7 @@ class MainPage extends React.Component {
     };
 
     this.onLogoutRequired = this.onLogoutRequired.bind(this);
-//    this.onDetailsRequired = this.onDetailsRequired.bind(this);
+    this.onOptionSelected = this.onOptionSelected.bind(this);
   }
 
   //
@@ -36,10 +38,6 @@ class MainPage extends React.Component {
     if(!this.props.admin.loggedIn) {
         this.context.router.history.push('/');
     }
-  }
-
-  componentWillUnmount() {
-//    this.props.timerActions.stopTimer();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,12 +50,53 @@ class MainPage extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+//    this.props.timerActions.stopTimer();
+  }
+
   //
   // Event handlers from stateless components
   //
   onLogoutRequired() {
     this.props.adminActions.logout();
     this.setState({logoutBusy: true});
+  }
+
+  onOptionSelected(option) {
+    let route = '';
+
+    switch (option) {
+      case MainOptions.AUCTIONS: {
+        route = '/auctions';
+      }
+      break;
+      case MainOptions.ITEM_LOCATIONS: {
+        route = '/itemLocations';
+      }
+      break;
+      case MainOptions.DELIVERY_OPTIONS: {
+        route = '/deliveryOptions';
+      }
+      break;
+      case MainOptions.PAYMENT_OPTIONS: {
+        route = '/paymentOptions';
+      }
+      break;
+      case MainOptions.CONTACT_INFOS: {
+        route = '/contactInfos';
+      }
+      break;
+      case MainOptions.USERS: {
+        route = '/users';
+      }
+      break;
+      default: {
+        route = '/';
+      }
+      break;
+    }
+
+    this.context.router.history.push(route);
   }
 
   //
@@ -81,7 +120,9 @@ class MainPage extends React.Component {
               </div>
             }
             {!isBusy &&
-              <div>Content here</div>
+              <div style={containerStyle}>
+                <MainOptionsControl onOptionSelected={this.onOptionSelected}/>
+              </div>
             }
           </div>
         }

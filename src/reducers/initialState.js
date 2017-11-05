@@ -1,7 +1,6 @@
 export default {
-/*  auctionItems: [],
-  keyword: '',
-  auctionItem: {
+  auctionItems: [],
+  auctionItemDraft: {
     id: '',
     imageUrls: [],
     title: '',
@@ -23,7 +22,6 @@ export default {
     new: false,
     recentlyUpdated: false
   },
-*/
   admin: {
     adminId: '',
     firstName: '',
@@ -34,15 +32,6 @@ export default {
     country: '',
     loggedIn: false
   },
-/*
-  bidDraft: {
-    itemId: '',
-    userId: '',
-    minimumBidAmount: 0,
-    bidStep: 0,
-    bidAmount: 0
-  },
-*/  
   busy: {
     isBusy: false,
     numberOfBusyOperations: 0

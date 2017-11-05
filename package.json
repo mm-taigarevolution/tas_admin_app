@@ -30,11 +30,13 @@
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta",
+    "enumify": "1.0.4",
     "jquery": "3.2.1",
     "object-assign": "4.1.0",
     "query-string": "5.0.1",
     "react": "15.5.4",
     "react-dom": "15.5.4",
+    "react-image-select-component": "1.1.2",
     "react-loader-advanced": "1.7.1",
     "react-redux": "5.0.5",
     "react-redux-toastr": "7.1.5",

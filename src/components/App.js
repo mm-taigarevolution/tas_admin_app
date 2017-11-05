@@ -4,6 +4,13 @@ import { Route } from 'react-router-dom';
 import { AnimatedSwitch } from 'react-router-transition';
 import AuthenticationPage from './pages/AuthenticationPage';
 import MainPage from './pages/MainPage';
+import ManageAuctionsPage from './pages/ManageAuctionsPage';
+import CreateNewAuctionPage from './pages/CreateNewAuctionPage';
+import ManageContactInfosPage from './pages/ManageContactInfosPage';
+import ManageDeliveryOptionsPage from './pages/ManageDeliveryOptionsPage';
+import ManageItemLocationsPage from './pages/ManageItemLocationsPage';
+import ManagePaymentOptionsPage from './pages/ManagePaymentOptionsPage';
+import ManageUsersPage from './pages/ManageUsersPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // This is a class-based component because the current
@@ -43,8 +50,15 @@ class App extends React.Component {
                       mapStyles={mapStyles}
                       className="route-wrapper">
         <Route exact path="/" component={AuthenticationPage} />
-        <Route exact path="/Main" component={MainPage}/>
-        <Route component={NotFoundPage} />
+        <Route exact path="/main" component={MainPage}/>
+        <Route exact path="/auctions" component={ManageAuctionsPage}/>
+        <Route exact path="/auctions/new" component={CreateNewAuctionPage}/>
+        <Route exact path="/contactInfos" component={ManageContactInfosPage}/>
+        <Route exact path="/deliveryOptions" component={ManageDeliveryOptionsPage}/>
+        <Route exact path="/itemLocations" component={ManageItemLocationsPage}/>
+        <Route exact path="/paymentOptions" component={ManagePaymentOptionsPage}/>
+        <Route exact path="/users" component={ManageUsersPage}/>
+        <Route component={NotFoundPage}/>
       </AnimatedSwitch>
     );
   }
