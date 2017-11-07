@@ -29,6 +29,7 @@
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js"
   },
   "dependencies": {
+    "better-react-spinkit": "2.0.2",
     "bootstrap": "4.0.0-beta",
     "enumify": "1.0.4",
     "jquery": "3.2.1",
@@ -38,6 +39,8 @@
     "react-dom": "15.5.4",
     "react-image-select-component": "1.1.2",
     "react-loader-advanced": "1.7.1",
+    "react-motion": "0.5.2",
+    "react-motion-ui-pack": "0.10.3",
     "react-redux": "5.0.5",
     "react-redux-toastr": "7.1.5",
     "react-router-dom": "4.0.0",
