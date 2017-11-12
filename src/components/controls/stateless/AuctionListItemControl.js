@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Media, Container, Row, Col, Badge } from 'reactstrap';
+import WithTapAnimated from '../stateful/TapAnimator';
 
 const containerStyle = {
   margin: '15px 0px',
@@ -124,4 +125,4 @@ AuctionListItemControl.propTypes = {
   auctionItem: PropTypes.object.isRequired
 };
 
-export default AuctionListItemControl;
+export default WithTapAnimated(AuctionListItemControl);
