@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Media, Container, Row, Col, Badge } from 'reactstrap';
-import WithTapAnimated from '../stateful/TapAnimator';
 
 const containerStyle = {
   margin: '15px 0px',
@@ -63,66 +62,74 @@ const placeholderStyle = {
 };
 
 const AuctionListItemControl = ({auctionItem}) => {
-  let numberOfBids = auctionItem.bids.length;
-  let currentPrice = auctionItem.currentPrice;
-  let auctionItemImg = auctionItem.imageUrls.length > 0 ? auctionItem.imageUrls[0] : null;
-  let active = new Date() < new Date(auctionItem.auctionEnd);
+  return class AuctionListItem extends React.Component {
+    constructor(props) {
+      super(props);
+    }
 
-  return (
-    <div style={containerStyle}>
-      <Media id="auctionListItemCard">
-        <Media left>
-          <Media object style={imgStyle} src={auctionItemImg} alt="image" />
-        </Media>
-        <Media right body>
-          <Container>
-            <Row>
-              <Col className="text-left" xs="auto">
-                <p style={titleStyle}>{auctionItem.title}</p>
-                <p style={captionStyle}>{auctionItem.itemLocation}</p>
-              </Col>
-              <Col className="text-right">
-                {!active &&
-                  <Badge color="secondary">Closed</Badge>
-                }
-              </Col>
-            </Row>
-            <Row style={placeholderStyle}>
-            </Row>
-            <Row>
-              <Col sm="6" className="text-left">
-                {active &&
-                  <div>
-                    {numberOfBids > 0 &&
-                      <p style={smallTitleStyle}>{numberOfBids} bids</p>
+    render() {
+      let numberOfBids = auctionItem.bids.length;
+      let currentPrice = auctionItem.currentPrice;
+      let auctionItemImg = auctionItem.imageUrls.length > 0 ? auctionItem.imageUrls[0] : null;
+      let active = new Date() < new Date(auctionItem.auctionEnd);
+
+      return (
+        <div style={containerStyle}>
+          <Media id="auctionListItemCard">
+            <Media left>
+              <Media object style={imgStyle} src={auctionItemImg} alt="image" />
+            </Media>
+            <Media right body>
+              <Container>
+                <Row>
+                  <Col className="text-left" xs="auto">
+                    <p style={titleStyle}>{auctionItem.title}</p>
+                    <p style={captionStyle}>{auctionItem.itemLocation}</p>
+                  </Col>
+                  <Col className="text-right">
+                    {!active &&
+                      <Badge color="secondary">Closed</Badge>
                     }
-                    {numberOfBids == 0 &&
-                      <p style={smallTitleStyle}>Start price</p>
+                  </Col>
+                </Row>
+                <Row style={placeholderStyle}>
+                </Row>
+                <Row>
+                  <Col sm="6" className="text-left">
+                    {active &&
+                      <div>
+                        {numberOfBids > 0 &&
+                          <p style={smallTitleStyle}>{numberOfBids} bids</p>
+                        }
+                        {numberOfBids == 0 &&
+                          <p style={smallTitleStyle}>Start price</p>
+                        }
+                      </div>
                     }
-                  </div>
-                }
-                {!active &&
-                  <p style={smallTitleStyle}>Final price</p>
-                }
-                <p style={remarkStyle}>{currentPrice} €</p>
-              </Col>
-              <Col className="text-right">
-                {active &&
-                  <div>
-                    <p style={smallTitleStyle}>Ends at</p>
-                  </div>
-                }
-              </Col>
-            </Row>
-          </Container>
-        </Media>
-      </Media>
-    </div>
-  );
-};
+                    {!active &&
+                      <p style={smallTitleStyle}>Final price</p>
+                    }
+                    <p style={remarkStyle}>{currentPrice} €</p>
+                  </Col>
+                  <Col className="text-right">
+                    {active &&
+                      <div>
+                        <p style={smallTitleStyle}>Ends at</p>
+                      </div>
+                    }
+                  </Col>
+                </Row>
+              </Container>
+            </Media>
+          </Media>
+        </div>
+      );
+    }
+  };
+}
 
 AuctionListItemControl.propTypes = {
   auctionItem: PropTypes.object.isRequired
 };
 
-export default WithTapAnimated(AuctionListItemControl);
+export default AuctionListItemControl;

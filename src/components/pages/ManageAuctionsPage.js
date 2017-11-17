@@ -10,7 +10,7 @@ import {toastr} from 'react-redux-toastr';
 import Transition from 'react-motion-ui-pack';
 import { spring } from 'react-router-transition';
 import PageTitleControl from '../controls/stateless/PageTitleControl';
-import AuctionListItemControl from '../controls/stateless/AuctionListItemControl';
+import TappableAuctionItemControl from '../controls/stateless/TappableAuctionItemControl';
 
 const containerStyle = {
   margin: '15px 0px',
@@ -55,14 +55,17 @@ class ManageAuctionsPage extends React.Component {
   // Event handlers from stateless components
   //
   OnAddNewButtonClicked() {
-    this.props.auctionItemDraftActions.putNewAuctionItemDraft();
+    this.props.auctionItemDraftActions.putAuctionItemDraft();
 
-    let route = "/auctions/new";
+    let route = "/auctions/manage";
     this.context.router.history.push(route);
   }
 
   OnEditItemRequired(item) {
-    // TODO: add implementation
+    this.props.auctionItemDraftActions.putAuctionItemDraft(item);
+
+    let route = "/auctions/manage";
+    this.context.router.history.push(route);
   }
 
   OnCloseItemRequired(item) {
@@ -111,7 +114,8 @@ class ManageAuctionsPage extends React.Component {
                                   runOnMount={true}>
                         {items.map(auctionItem => (
                           <div key={auctionItem.id}>
-                            <AuctionListItemControl auctionItem={auctionItem}/>
+                            <TappableAuctionItemControl auctionItem={auctionItem}
+                                                        onItemTapped={this.OnEditItemRequired}/>
                           </div>))
                         }
                       </Transition>

@@ -20,7 +20,6 @@ const WithTapAnimated = (Child, callback) => {
 
     onMouseUp(e) {
       this.setState({isTapped: false});
-
       if(callback) {
         // add small delay for better UX
         setTimeout(() => {
@@ -50,7 +49,7 @@ const WithTapAnimated = (Child, callback) => {
 
 WithTapAnimated.propTypes = {
   Child: PropTypes.object.isRequired,
-  callback: PropTypes.object.isRequired
+  callback: PropTypes.func.isRequired
 };
 
 

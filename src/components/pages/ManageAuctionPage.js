@@ -9,7 +9,7 @@ import {toastr} from 'react-redux-toastr';
 import Transition from 'react-motion-ui-pack';
 import { spring } from 'react-router-transition';
 import PageTitleControl from '../controls/stateless/PageTitleControl';
-import AuctionDetailsControl from '../controls/stateful/AuctionDetailsControl';
+import AuctionDetailsControl from '../controls/stateless/AuctionDetailsControl';
 
 const containerStyle = {
   margin: '15px 0px',
@@ -22,12 +22,18 @@ const spinnerStyle = {
  justifyContent: 'center'
 };
 
-class CreateNewAuctionPage extends React.Component {
+class ManageAuctionPage extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      auctionItemDraft: {id:''}
+    };
 
-    this.OnCancelRequired = this.OnCancelRequired.bind(this);
-    this.OnSaveRequired = this.OnSaveRequired.bind(this);
+    this.onImageSelected = this.onImageSelected.bind(this);
+    this.onInvalidImageSelected = this.onInvalidImageSelected.bind(this);
+    this.onImageRemoved = this.onImageRemoved.bind(this);
+    this.onCancelRequired = this.onCancelRequired.bind(this);
+    this.onPreviewRequired = this.onPreviewRequired.bind(this);
   }
 
   //
@@ -48,11 +54,23 @@ class CreateNewAuctionPage extends React.Component {
   //
   // Event handlers from stateless components
   //
-  OnCancelRequired() {
+  onImageSelected() {
+    // TODO: add implementation
+  }
+
+  onInvalidImageSelected() {
+    // TODO: add implementation
+  }
+
+  onImageRemoved() {
+    // TODO: add implementation
+  }
+
+  onCancelRequired() {
     this.context.router.history.goBack();
   }
 
-  OnSaveRequired() {
+  onPreviewRequired() {
     // TODO: add implementation
   }
 
@@ -63,9 +81,9 @@ class CreateNewAuctionPage extends React.Component {
     let isBusy = this.props.isBusy;
     let errorOccurred = this.props.errorOccurred;
     let isLoggedIn = this.props.admin.loggedIn;
-    let pageTitle = "Create new";
     let auctionItemDraft = this.props.auctionItemDraft;
-
+    let pageTitle = auctionItemDraft.id.length == 0 ? "Create auction" : "Edit auction";
+    
     return (
       <div>
         {isLoggedIn &&
@@ -85,7 +103,15 @@ class CreateNewAuctionPage extends React.Component {
                             enter={{opacity: 1, translateY: spring(0, {stiffness: 200, damping: 20})}}
                             leave={{opacity: 0, translateY: 800}}
                             runOnMount={true}>
-                  <AuctionDetailsControl key={1}/>
+                  <div key={auctionItemDraft.id}>
+                    <AuctionDetailsControl auctionItemDraft={auctionItemDraft}
+                                           isBusy={isBusy}
+                                           onImageSelected={this.onImageSelected}
+                                           onInvalidImageSelected={this.onInvalidImageSelected}
+                                           onImageRemoved={this.onImageRemoved}
+                                           onCancelRequired={this.onCancelRequired}
+                                           onPreviewRequired={this.onPreviewRequired}/>
+                  </div>
                 </Transition>
               </div>
             }
@@ -99,11 +125,11 @@ class CreateNewAuctionPage extends React.Component {
 //
 // Prop types for the page
 //
-CreateNewAuctionPage.propTypes = {
-  admin: PropTypes.object,
-  auctionItemDraft: PropTypes.object,
-  isBusy: PropTypes.bool,
-  errorOccurred: PropTypes.bool,
+ManageAuctionPage.propTypes = {
+  admin: PropTypes.object.isRequired,
+  auctionItemDraft: PropTypes.object.isRequired,
+  isBusy: PropTypes.bool.isRequired,
+  errorOccurred: PropTypes.bool.isRequired,
   adminActions: PropTypes.object.isRequired,
   auctionsActions: PropTypes.object.isRequired
 };
@@ -111,7 +137,7 @@ CreateNewAuctionPage.propTypes = {
 //
 // Context types for the page
 //
-CreateNewAuctionPage.contextTypes = {
+ManageAuctionPage.contextTypes = {
   router: PropTypes.object
 };
 
@@ -139,4 +165,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateNewAuctionPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageAuctionPage);

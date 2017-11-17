@@ -5,7 +5,7 @@ import { AnimatedSwitch } from 'react-router-transition';
 import AuthenticationPage from './pages/AuthenticationPage';
 import MainPage from './pages/MainPage';
 import ManageAuctionsPage from './pages/ManageAuctionsPage';
-import CreateNewAuctionPage from './pages/CreateNewAuctionPage';
+import ManageAuctionPage from './pages/ManageAuctionPage';
 import ManageContactInfosPage from './pages/ManageContactInfosPage';
 import ManageDeliveryOptionsPage from './pages/ManageDeliveryOptionsPage';
 import ManageItemLocationsPage from './pages/ManageItemLocationsPage';
@@ -52,7 +52,7 @@ class App extends React.Component {
         <Route exact path="/" component={AuthenticationPage} />
         <Route exact path="/main" component={MainPage}/>
         <Route exact path="/auctions" component={ManageAuctionsPage}/>
-        <Route exact path="/auctions/new" component={CreateNewAuctionPage}/>
+        <Route exact path="/auctions/manage" component={ManageAuctionPage}/>
         <Route exact path="/contactInfos" component={ManageContactInfosPage}/>
         <Route exact path="/deliveryOptions" component={ManageDeliveryOptionsPage}/>
         <Route exact path="/itemLocations" component={ManageItemLocationsPage}/>
