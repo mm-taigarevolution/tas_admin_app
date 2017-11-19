@@ -99,9 +99,10 @@ class AuctionsApi {
   static putAuctionItemDraft(item, admin) {
     return new Promise((resolve) => {
       setTimeout(() => {
+        debugger;
         let newItem = Object.assign({}, item);
-        newItem.updated = new Date();
-        newItem.updatedBy = admin.adminId,
+        newItem.updated = new Date().toString();
+        newItem.updatedBy = admin.adminId.toString();
         resolve(newItem);
       }, delay.mockApiTimeout);
     });
@@ -111,12 +112,12 @@ class AuctionsApi {
     return new Promise((resolve) => {
       setTimeout(() => {
         let newItem = Object.assign({}, item);
-        newItem.id = Math.floor((Math.random() * 100000000) + 1); // bad but enough for mock purposes
-        newItem.auctionStart = new Date();
-        newItem.auctionEnd = new Date();
-        newItem.createdBy = admin.adminId,
-        newItem.created = new Date();
-        newItem.updated = new Date();
+        newItem.id = Math.floor((Math.random() * 100000000) + 1).toString(); // bad but enough for mock purposes
+        newItem.auctionStart = new Date().toString();
+        newItem.auctionEnd = new Date().toString();
+        newItem.createdBy = admin.adminId.toString();
+        newItem.created = new Date().toString();
+        newItem.updated = new Date().toString();
 
         resolve(newItem);
       }, delay.mockApiTimeout);

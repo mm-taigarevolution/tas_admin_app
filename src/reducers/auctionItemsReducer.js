@@ -36,25 +36,21 @@ export default function auctionItemsReducer(state = initialState.auctionItems, a
     }
 
     case PUT_AUCTION_ITEM_DRAFT: {
-      debugger;
-      const newState = {...state};
-      let existingItems = newState.filter(item => item.id.includes(action.value.id));
+      let newState = [];
 
-      // TODO: implement this better
-      if(existingItems.length == 1) {
-        newState.pop(existingItems[0]);
-      }
-      newState.push(action.value);
-      newState.sort(function(a,b){
-        return b.id - a.id;
+      state.map(function(item) {
+        if(item.id == action.value.id) {
+          newState.push(action.value);
+        }
+        else {
+          newState.push(item);
+        }
       });
-
       return newState;
     }
 
     case POST_AUCTION_ITEM_DRAFT: {
-      debugger;
-      let newState = Object.assign([], state);
+      let newState = [...state];
       newState.push(action.value);
       return newState;
     }
