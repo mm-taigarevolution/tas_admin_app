@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import * as adminActions from '../../actions/adminActions';
-import * as auctionsActions from '../../actions/auctionsActions';
+import * as auctionItemDraftActions from '../../actions/auctionItemDraftActions';
 import {bindActionCreators} from 'redux';
 import {ThreeBounce} from 'better-react-spinkit';
 import {toastr} from 'react-redux-toastr';
@@ -29,11 +28,20 @@ class ManageAuctionPage extends React.Component {
       auctionItemDraft: {id:''}
     };
 
+    this.onTitleChanged = this.onTitleChanged.bind(this);
     this.onImageSelected = this.onImageSelected.bind(this);
     this.onInvalidImageSelected = this.onInvalidImageSelected.bind(this);
     this.onImageRemoved = this.onImageRemoved.bind(this);
+    this.onDescriptionChanged = this.onDescriptionChanged.bind(this);
+    this.onStartPriceChanged = this.onStartPriceChanged.bind(this);
+    this.onMinimumBidChanged = this.onMinimumBidChanged.bind(this);
+    this.onItemLocationChanged = this.onItemLocationChanged.bind(this);
+    this.onContactInfoChanged = this.onContactInfoChanged.bind(this);
+    this.onPaymentInfoChanged = this.onPaymentInfoChanged.bind(this);
+    this.onDeliveryInfoChanged = this.onDeliveryInfoChanged.bind(this);
     this.onCancelRequired = this.onCancelRequired.bind(this);
     this.onPreviewRequired = this.onPreviewRequired.bind(this);
+    this.onEndAuctionClicked = this.onEndAuctionClicked.bind(this);
   }
 
   //
@@ -43,35 +51,108 @@ class ManageAuctionPage extends React.Component {
     if(!this.props.admin.loggedIn) {
       this.context.router.history.push('/');
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillUnmount() {
+    else {
+      // create a local copy of draft
+      let draft = Object.assign({}, this.props.auctionItemDraft);
+      this.setState({auctionItemDraft: draft })
+    }
   }
 
   //
   // Event handlers from stateless components
   //
-  onImageSelected() {
+  onEndAuctionClicked(e) {
+    e.preventDefault();
     // TODO: add implementation
   }
 
-  onInvalidImageSelected() {
+  onTitleChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.title = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onImageSelected(e) {
     // TODO: add implementation
   }
 
-  onImageRemoved() {
+  onInvalidImageSelected(e) {
     // TODO: add implementation
   }
 
-  onCancelRequired() {
+  onImageRemoved(e) {
+    // TODO: add implementation
+  }
+
+  onDescriptionChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.description = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onStartPriceChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.startPrice = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onMinimumBidChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.minimumBidStep = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onItemLocationChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.itemLocation = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onContactInfoChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.contactInfo = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onPaymentInfoChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.paymentInfo = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onDeliveryInfoChanged(e) {
+    e.preventDefault();
+
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.deliveryInfo = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onCancelRequired(e) {
+    e.preventDefault();
     this.context.router.history.goBack();
   }
 
-  onPreviewRequired() {
-    // TODO: add implementation
+  onPreviewRequired(e) {
+    e.preventDefault();
+    this.props.auctionItemDraftActions.putInternalAuctionItemDraft(this.state.auctionItemDraft);
+
+    let route = "/auctions/preview";
+    this.context.router.history.push(route);
   }
 
   //
@@ -81,16 +162,20 @@ class ManageAuctionPage extends React.Component {
     let isBusy = this.props.isBusy;
     let errorOccurred = this.props.errorOccurred;
     let isLoggedIn = this.props.admin.loggedIn;
-    let auctionItemDraft = this.props.auctionItemDraft;
+    let auctionItemDraft = this.state.auctionItemDraft;
     let pageTitle = auctionItemDraft.id.length == 0 ? "Create auction" : "Edit auction";
-    
+    let useTitleButton = auctionItemDraft.id.length == 0 ? false : true;
+    let buttonTitle = "End auction";
+
     return (
       <div>
         {isLoggedIn &&
           <div style={containerStyle}>
             <PageTitleControl isBusy={isBusy}
                               pageTitle={pageTitle}
-                              useAddNewButton={false}/>
+                              useTitleButton={useTitleButton}
+                              buttonTitle={buttonTitle}
+                              onButtonClicked = {this.onEndAuctionClicked}/>
             {isBusy &&
               <div>
                 <ThreeBounce color="gray"
@@ -106,9 +191,17 @@ class ManageAuctionPage extends React.Component {
                   <div key={auctionItemDraft.id}>
                     <AuctionDetailsControl auctionItemDraft={auctionItemDraft}
                                            isBusy={isBusy}
+                                           onTitleChanged={this.onTitleChanged}
                                            onImageSelected={this.onImageSelected}
                                            onInvalidImageSelected={this.onInvalidImageSelected}
                                            onImageRemoved={this.onImageRemoved}
+                                           onDescriptionChanged={this.onDescriptionChanged}
+                                           onStartPriceChanged={this.onStartPriceChanged}
+                                           onMinimumBidChanged={this.onMinimumBidChanged}
+                                           onItemLocationChanged={this.onItemLocationChanged}
+                                           onContactInfoChanged={this.onContactInfoChanged}
+                                           onPaymentInfoChanged={this.onPaymentInfoChanged}
+                                           onDeliveryInfoChanged={this.onDeliveryInfoChanged}
                                            onCancelRequired={this.onCancelRequired}
                                            onPreviewRequired={this.onPreviewRequired}/>
                   </div>
@@ -130,8 +223,7 @@ ManageAuctionPage.propTypes = {
   auctionItemDraft: PropTypes.object.isRequired,
   isBusy: PropTypes.bool.isRequired,
   errorOccurred: PropTypes.bool.isRequired,
-  adminActions: PropTypes.object.isRequired,
-  auctionsActions: PropTypes.object.isRequired
+  auctionItemDraftActions: PropTypes.object.isRequired
 };
 
 //
@@ -160,8 +252,7 @@ function mapStateToProps(state) {
 //
 function mapDispatchToProps(dispatch) {
   return {
-    adminActions: bindActionCreators(adminActions, dispatch),
-    auctionsActions: bindActionCreators(auctionsActions, dispatch)
+    auctionItemDraftActions: bindActionCreators(auctionItemDraftActions, dispatch)
   };
 }
 

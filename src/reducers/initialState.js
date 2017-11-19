@@ -14,6 +14,7 @@ export default {
     createdBy: '',
     created: '',
     updated: '',
+    updatedBy: '',
     itemLocation: '',
     contactInfo: '',
     paymentInfo: '',

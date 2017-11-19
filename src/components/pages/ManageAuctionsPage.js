@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import * as adminActions from '../../actions/adminActions';
 import * as auctionsActions from '../../actions/auctionsActions';
 import * as auctionItemDraftActions from '../../actions/auctionItemDraftActions';
 import {bindActionCreators} from 'redux';
@@ -29,7 +28,6 @@ class ManageAuctionsPage extends React.Component {
 
     this.OnAddNewButtonClicked = this.OnAddNewButtonClicked.bind(this);
     this.OnEditItemRequired = this.OnEditItemRequired.bind(this);
-    this.OnCloseItemRequired = this.OnCloseItemRequired.bind(this);
   }
 
   //
@@ -41,7 +39,9 @@ class ManageAuctionsPage extends React.Component {
     }
 
     else {
-      this.props.auctionsActions.getAuctionItems();
+      if(this.props.auctionItems.length == 0) {
+        this.props.auctionsActions.getAuctionItems();
+      }
     }
   }
 
@@ -55,21 +55,17 @@ class ManageAuctionsPage extends React.Component {
   // Event handlers from stateless components
   //
   OnAddNewButtonClicked() {
-    this.props.auctionItemDraftActions.putAuctionItemDraft();
+    this.props.auctionItemDraftActions.putInternalAuctionItemDraft();
 
     let route = "/auctions/manage";
     this.context.router.history.push(route);
   }
 
   OnEditItemRequired(item) {
-    this.props.auctionItemDraftActions.putAuctionItemDraft(item);
+    this.props.auctionItemDraftActions.putInternalAuctionItemDraft(item);
 
     let route = "/auctions/manage";
     this.context.router.history.push(route);
-  }
-
-  OnCloseItemRequired(item) {
-    // TODO: add implementation
   }
 
   //
@@ -89,7 +85,7 @@ class ManageAuctionsPage extends React.Component {
           <div style={containerStyle}>
             <PageTitleControl isBusy={isBusy}
                               pageTitle={pageTitle}
-                              useAddNewButton={true}
+                              useTitleButton={true}
                               buttonTitle={buttonTitle}
                               onButtonClicked = {this.OnAddNewButtonClicked}/>
             {isBusy &&
@@ -144,7 +140,6 @@ ManageAuctionsPage.propTypes = {
   auctionItems: PropTypes.array,
   isBusy: PropTypes.bool,
   errorOccurred: PropTypes.bool,
-  adminActions: PropTypes.object.isRequired,
   auctionsActions: PropTypes.object.isRequired,
   auctionItemDraftActions: PropTypes.object.isRequired
 };
@@ -175,7 +170,6 @@ function mapStateToProps(state) {
 //
 function mapDispatchToProps(dispatch) {
   return {
-    adminActions: bindActionCreators(adminActions, dispatch),
     auctionsActions: bindActionCreators(auctionsActions, dispatch),
     auctionItemDraftActions: bindActionCreators(auctionItemDraftActions, dispatch)
   };

@@ -1,4 +1,4 @@
-import {GET_AUCTION_ITEMS} from '../common/actionTypes';
+import {GET_AUCTION_ITEMS, PUT_AUCTION_ITEM_DRAFT, POST_AUCTION_ITEM_DRAFT} from '../common/actionTypes';
 import initialState from './initialState';
 
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -32,6 +32,30 @@ export default function auctionItemsReducer(state = initialState.auctionItems, a
           newState.push(updatedItem);
         });
       }
+      return newState;
+    }
+
+    case PUT_AUCTION_ITEM_DRAFT: {
+      debugger;
+      const newState = {...state};
+      let existingItems = newState.filter(item => item.id.includes(action.value.id));
+
+      // TODO: implement this better
+      if(existingItems.length == 1) {
+        newState.pop(existingItems[0]);
+      }
+      newState.push(action.value);
+      newState.sort(function(a,b){
+        return b.id - a.id;
+      });
+
+      return newState;
+    }
+
+    case POST_AUCTION_ITEM_DRAFT: {
+      debugger;
+      let newState = Object.assign([], state);
+      newState.push(action.value);
       return newState;
     }
     default:

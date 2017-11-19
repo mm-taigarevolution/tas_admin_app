@@ -1,4 +1,4 @@
-import {PUT_AUCTION_ITEM_DRAFT} from '../common/actionTypes';
+import {PUT_INTERNAL_AUCTION_ITEM_DRAFT, PUT_AUCTION_ITEM_DRAFT, POST_AUCTION_ITEM_DRAFT} from '../common/actionTypes';
 import initialState from './initialState';
 
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -8,7 +8,7 @@ import initialState from './initialState';
 // and update values on the copy.
 export default function auctionItemDraftReducer(state = initialState.auctionItemDraft, action) {
   switch (action.type) {
-    case PUT_AUCTION_ITEM_DRAFT: {
+    case PUT_INTERNAL_AUCTION_ITEM_DRAFT: {
       if(action.value != null) {
         let newState = Object.assign({}, action.value);
         return newState;
@@ -18,6 +18,15 @@ export default function auctionItemDraftReducer(state = initialState.auctionItem
         return newState;
       }
     }
+/*
+    // in case of updating or creating new item, reset the internal draft to default
+    case PUT_AUCTION_ITEM_DRAFT:
+    case POST_AUCTION_ITEM_DRAFT: {
+      debugger;
+      let newState = Object.assign({}, initialState.auctionItemDraft);
+      return newState;
+    }
+*/    
     default:
       return state;
   }

@@ -1,98 +1,177 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Row, Col, InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
+import { Form, FormGroup, Label, Col, InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 import ImageFileSelector from "react-image-select-component";
 
-const inputRowStyle = {
-  margin: '10px 0px',
-  padding: '0px'
+const largeFieldStyle = {
+  minHeight: 300
 };
 
-const buttonStyle = {
-  margin: '0px 10px',
-  textAlign: 'right'
+const mediumFieldStyle = {
+  minHeight: 100
+};
+
+const buttonContainerStyle = {
+  display: 'flex',
+  justifyContent: 'flex-end'
 };
 
 const buttonRowStyle = {
-  margin: '20px 0px 0px 0px',
-  display: 'flex',
-  justifyContent: 'center'
+  margin: '10px 0px 0px 0px',
+  padding: '20px 0px',
+  borderTop: '1px dashed lightgray',
 };
 
-const AuctionDetailsControl = ({auctionItemDraft, isBusy, onImageSelected, onInvalidImageSelected, onImageRemoved, onCancelRequired, onPreviewRequired}) => {
+const AuctionDetailsControl = ({auctionItemDraft,
+                                isBusy,
+                                onTitleChanged,
+                                onImageSelected,
+                                onInvalidImageSelected,
+                                onImageRemoved,
+                                onDescriptionChanged,
+                                onStartPriceChanged,
+                                onMinimumBidChanged,
+                                onItemLocationChanged,
+                                onContactInfoChanged,
+                                onPaymentInfoChanged,
+                                onDeliveryInfoChanged,
+                                onCancelRequired,
+                                onPreviewRequired}) => {
+   // disable fields if editing existing item
+   let editingDisabled = auctionItemDraft.id.length > 0;
+   let minStartPrice = 0;
+   let minBidStep = 1;
+   let minStep = 1;
+   
    return (
-     <Container>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Item name"
-                  value={auctionItemDraft.title}/>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <ImageFileSelector id="imageFileSelector"
-                            onSelect={onImageSelected}
-                            onInvalidImage={onInvalidImageSelected}
-                            onRemoveImage={onImageRemoved}/>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Item description"/>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Start price"
-                  type="number"/>
-           <InputGroupAddon>€</InputGroupAddon>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Minimum bid step"
-                  type="number"/>
-           <InputGroupAddon>€</InputGroupAddon>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Minimum bid step"
-                  type="number"/>
-           <InputGroupAddon>€</InputGroupAddon>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Item location"/>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Contact info"/>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Payment info"/>
-         </InputGroup>
-       </Row>
-       <Row style={inputRowStyle}>
-         <InputGroup>
-           <Input placeholder="Delivery info"/>
-         </InputGroup>
-       </Row>
-       <Row style={buttonRowStyle}>
-         <Button id="cancelButton"
-                 style={buttonStyle}
-                 color="secondary"
+     <Form>
+      <FormGroup row>
+        <Label for="itemName" sm={3}>Name</Label>
+        <Col sm={9}>
+          <Input id="itemName"
+                 type="textarea"
+                 placeholder="Enter name..."
+                 value={auctionItemDraft.title}
                  disabled={isBusy}
-                 onClick={onCancelRequired}>Cancel</Button>
-         <Button id="previewButton"
-                 style={buttonStyle}
-                 color="primary"
+                 onChange={onTitleChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="imageFileSelector" sm={3}>Images</Label>
+        <Col sm={9}>
+          <ImageFileSelector id="imageFileSelector"
+                             onSelect={onImageSelected}
+                             onInvalidImage={onInvalidImageSelected}
+                             onRemoveImage={onImageRemoved}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="itemDescription" sm={3}>Description</Label>
+        <Col sm={9}>
+          <Input id="itemDescription"
+                 type="textarea"
+                 style={largeFieldStyle}
+                 placeholder="Enter description..."
                  disabled={isBusy}
-                 onClick={onPreviewRequired}>Preview</Button>
-       </Row>
-    </Container>
+                 value={auctionItemDraft.description}
+                 onChange={onDescriptionChanged}/>
+
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="startPrice" sm={6}>Start price</Label>
+        <Col sm={6}>
+          <InputGroup>
+            <Input id="startPrice"
+                   type="number"
+                   disabled={editingDisabled}
+                   min={minStartPrice}
+                   step={minStep}
+                   value={auctionItemDraft.startPrice}
+                   onChange={onStartPriceChanged}/>
+            <InputGroupAddon>€</InputGroupAddon>
+          </InputGroup>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="minimumBidStep" sm={6}>Minimum bid</Label>
+        <Col sm={6}>
+          <InputGroup>
+            <Input id="minimumBidStep"
+                   type="number"
+                   disabled={editingDisabled}
+                   min={minBidStep}
+                   step={minStep}
+                   value={auctionItemDraft.minimumBidStep}
+                   onChange={onMinimumBidChanged}/>
+            <InputGroupAddon>€</InputGroupAddon>
+          </InputGroup>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="itemLocation" sm={3}>Location</Label>
+        <Col sm={9}>
+          <Input id="itemLocation"
+                 type="textarea"
+                 placeholder="Enter item location..."
+                 disabled={isBusy}
+                 value={auctionItemDraft.itemLocation}
+                 onChange={onItemLocationChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="contactInfo" sm={3}>Contact info</Label>
+        <Col sm={9}>
+          <Input id="contactInfo"
+                 type="textarea"
+                 style={mediumFieldStyle}
+                 placeholder="Enter contact info..."
+                 disabled={isBusy}
+                 value={auctionItemDraft.contactInfo}
+                 onChange={onContactInfoChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="paymentInfo" sm={3}>Payment info</Label>
+        <Col sm={9}>
+          <Input id="paymentInfo"
+                 type="textarea"
+                 style={mediumFieldStyle}
+                 placeholder="Enter payment info..."
+                 disabled={isBusy}
+                 value={auctionItemDraft.paymentInfo}
+                 onChange={onPaymentInfoChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="deliveryInfo" sm={3}>Delivery</Label>
+        <Col sm={9}>
+          <Input id="deliveryInfo"
+                 type="textarea"
+                 style={mediumFieldStyle}
+                 placeholder="Enter delivery info..."
+                 disabled={isBusy}
+                 value={auctionItemDraft.deliveryInfo}
+                 onChange={onDeliveryInfoChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row style={buttonRowStyle}>
+        <Col sm={9}
+             style={buttonContainerStyle}>
+          <Button id="cancelButton"
+                  color="secondary"
+                  disabled={isBusy}
+                  onClick={onCancelRequired}>Cancel</Button>
+        </Col>
+        <Col sm={3}
+             style={buttonContainerStyle}>
+          <Button id="previewButton"
+                  color="primary"
+                  disabled={isBusy}
+                  onClick={onPreviewRequired}>Preview</Button>
+        </Col>
+      </FormGroup>
+    </Form>
   );
 }
 
@@ -102,9 +181,17 @@ const AuctionDetailsControl = ({auctionItemDraft, isBusy, onImageSelected, onInv
 AuctionDetailsControl.propTypes = {
   auctionItemDraft: PropTypes.object.isRequired,
   isBusy: PropTypes.bool.isRequired,
+  onTitleChanged: PropTypes.func.isRequired,
   onImageSelected: PropTypes.func.isRequired,
   onInvalidImageSelected: PropTypes.func.isRequired,
   onImageRemoved: PropTypes.func.isRequired,
+  onDescriptionChanged: PropTypes.func.isRequired,
+  onStartPriceChanged: PropTypes.func.isRequired,
+  onMinimumBidChanged: PropTypes.func.isRequired,
+  onItemLocationChanged: PropTypes.func.isRequired,
+  onContactInfoChanged: PropTypes.func.isRequired,
+  onPaymentInfoChanged: PropTypes.func.isRequired,
+  onDeliveryInfoChanged: PropTypes.func.isRequired,
   onCancelRequired: PropTypes.func.isRequired,
   onPreviewRequired: PropTypes.func.isRequired
 };

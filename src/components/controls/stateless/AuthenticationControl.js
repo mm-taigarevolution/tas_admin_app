@@ -57,6 +57,7 @@ const AuthenticationControl = ({isBusy, errorOccurred, loginEnabled, onUserNameC
             </Row>
             <Row style={rowStyle}>
               <Input id="passwordInput"
+                     type="password"
                      placeholder="Your password"
                      disabled={isBusy}
                      onChange={onPasswordChanged}/>

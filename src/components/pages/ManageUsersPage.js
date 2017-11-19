@@ -104,7 +104,7 @@ function mapStateToProps(state) {
 //
 function mapDispatchToProps(dispatch) {
   return {
-    adminActions: bindActionCreators(adminActions, dispatch),
+    adminActions: bindActionCreators(adminActions, dispatch)
   };
 }
 

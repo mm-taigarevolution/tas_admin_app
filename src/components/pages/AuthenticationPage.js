@@ -31,7 +31,7 @@ class AuthenticationPage extends React.Component {
         let userName = nextProps.admin.firstName + ' ' + nextProps.admin.lastName;
         toastr.success('Welcome, ' + userName +'!');
 
-        this.context.router.history.push('/main');
+        this.context.router.history.replace('/main');
         this.setState({loginBusy: false});
       }
     }

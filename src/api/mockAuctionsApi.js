@@ -95,6 +95,33 @@ class AuctionsApi {
       }, delay.mockApiTimeout);
     });
   }
+
+  static putAuctionItemDraft(item, admin) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let newItem = Object.assign({}, item);
+        newItem.updated = new Date();
+        newItem.updatedBy = admin.adminId,
+        resolve(newItem);
+      }, delay.mockApiTimeout);
+    });
+  }
+
+  static postAuctionItemDraft(item, admin) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let newItem = Object.assign({}, item);
+        newItem.id = Math.floor((Math.random() * 100000000) + 1); // bad but enough for mock purposes
+        newItem.auctionStart = new Date();
+        newItem.auctionEnd = new Date();
+        newItem.createdBy = admin.adminId,
+        newItem.created = new Date();
+        newItem.updated = new Date();
+
+        resolve(newItem);
+      }, delay.mockApiTimeout);
+    });
+  }
 }
 
 export default AuctionsApi;
