@@ -1,5 +1,6 @@
 import {PUT_INTERNAL_AUCTION_ITEM_DRAFT, PUT_AUCTION_ITEM_DRAFT, POST_AUCTION_ITEM_DRAFT} from '../common/actionTypes';
 import initialState from './initialState';
+import moment from 'moment';
 
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,
@@ -15,6 +16,8 @@ export default function auctionItemDraftReducer(state = initialState.auctionItem
       }
       else {
         let newState = Object.assign({}, initialState.auctionItemDraft);
+        newState.auctionStart = moment().startOf('day').toISOString();
+        newState.auctionEnd = moment().startOf('day').add(7, 'days').toISOString();
         return newState;
       }
     }
@@ -26,7 +29,7 @@ export default function auctionItemDraftReducer(state = initialState.auctionItem
       let newState = Object.assign({}, initialState.auctionItemDraft);
       return newState;
     }
-*/    
+*/
     default:
       return state;
   }

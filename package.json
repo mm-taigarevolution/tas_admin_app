@@ -36,6 +36,7 @@
     "object-assign": "4.1.0",
     "query-string": "5.0.1",
     "react": "15.5.4",
+    "react-datepicker": "0.61.0",
     "react-dom": "15.5.4",
     "react-image-select-component": "1.1.2",
     "react-loader-advanced": "1.7.1",

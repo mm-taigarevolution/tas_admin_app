@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormGroup, Label, Col, InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 import ImageFileSelector from "react-image-select-component";
+import DatePicker from 'react-datepicker';
+import '../../../../node_modules/react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 const largeFieldStyle = {
   minHeight: 300
@@ -31,6 +34,8 @@ const AuctionDetailsControl = ({auctionItemDraft,
                                 onDescriptionChanged,
                                 onStartPriceChanged,
                                 onMinimumBidChanged,
+                                onAuctionStartDateChanged,
+                                onAuctionEndDateChanged,
                                 onItemLocationChanged,
                                 onContactInfoChanged,
                                 onPaymentInfoChanged,
@@ -42,7 +47,10 @@ const AuctionDetailsControl = ({auctionItemDraft,
    let minStartPrice = 0;
    let minBidStep = 1;
    let minStep = 1;
-   
+   let startDate = moment(auctionItemDraft.auctionStart).startOf('day');
+   let endDate = moment(auctionItemDraft.auctionEnd).startOf('day');
+   let startDateEditDisabled = startDate < moment().startOf('day');
+
    return (
      <Form>
       <FormGroup row>
@@ -106,6 +114,27 @@ const AuctionDetailsControl = ({auctionItemDraft,
                    onChange={onMinimumBidChanged}/>
             <InputGroupAddon>€</InputGroupAddon>
           </InputGroup>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="auctionStartDate" sm={3}>Start date</Label>
+        <Col sm={9}>
+          <DatePicker id="auctionStartDate"
+                      todayButton={"Today"}
+                      disabled={startDateEditDisabled}
+                      minDate={moment().startOf('day')}
+                      maxDate={endDate}
+                      selected={startDate}
+                      onChange={onAuctionStartDateChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="auctionEndDate" sm={3}>End date</Label>
+        <Col sm={9}>
+          <DatePicker id="auctionEndDate"
+                      minDate={startDate.startOf('day').add(1, "days")}
+                      selected={endDate}
+                      onChange={onAuctionEndDateChanged}/>
         </Col>
       </FormGroup>
       <FormGroup row>
@@ -188,6 +217,8 @@ AuctionDetailsControl.propTypes = {
   onDescriptionChanged: PropTypes.func.isRequired,
   onStartPriceChanged: PropTypes.func.isRequired,
   onMinimumBidChanged: PropTypes.func.isRequired,
+  onAuctionStartDateChanged: PropTypes.func.isRequired,
+  onAuctionEndDateChanged: PropTypes.func.isRequired,
   onItemLocationChanged: PropTypes.func.isRequired,
   onContactInfoChanged: PropTypes.func.isRequired,
   onPaymentInfoChanged: PropTypes.func.isRequired,

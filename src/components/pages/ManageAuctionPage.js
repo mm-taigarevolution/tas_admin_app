@@ -35,6 +35,8 @@ class ManageAuctionPage extends React.Component {
     this.onDescriptionChanged = this.onDescriptionChanged.bind(this);
     this.onStartPriceChanged = this.onStartPriceChanged.bind(this);
     this.onMinimumBidChanged = this.onMinimumBidChanged.bind(this);
+    this.onAuctionStartDateChanged = this.onAuctionStartDateChanged.bind(this);
+    this.onAuctionEndDateChanged = this.onAuctionEndDateChanged.bind(this);
     this.onItemLocationChanged = this.onItemLocationChanged.bind(this);
     this.onContactInfoChanged = this.onContactInfoChanged.bind(this);
     this.onPaymentInfoChanged = this.onPaymentInfoChanged.bind(this);
@@ -107,6 +109,18 @@ class ManageAuctionPage extends React.Component {
 
     let draft = Object.assign({}, this.state.auctionItemDraft);
     draft.minimumBidStep = e.target.value;
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onAuctionStartDateChanged(e) {
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.auctionStart = e.toISOString();
+    this.setState({auctionItemDraft: draft });
+  }
+
+  onAuctionEndDateChanged(e) {
+    let draft = Object.assign({}, this.state.auctionItemDraft);
+    draft.auctionEnd = e.toISOString();
     this.setState({auctionItemDraft: draft });
   }
 
@@ -198,6 +212,8 @@ class ManageAuctionPage extends React.Component {
                                            onDescriptionChanged={this.onDescriptionChanged}
                                            onStartPriceChanged={this.onStartPriceChanged}
                                            onMinimumBidChanged={this.onMinimumBidChanged}
+                                           onAuctionStartDateChanged={this.onAuctionStartDateChanged}
+                                           onAuctionEndDateChanged={this.onAuctionEndDateChanged}
                                            onItemLocationChanged={this.onItemLocationChanged}
                                            onContactInfoChanged={this.onContactInfoChanged}
                                            onPaymentInfoChanged={this.onPaymentInfoChanged}
