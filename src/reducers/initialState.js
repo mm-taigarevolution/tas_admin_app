@@ -2,7 +2,7 @@ export default {
   auctionItems: [],
   auctionItemDraft: {
     id: '',
-    imageUrls: [],
+    images: [],
     title: '',
     description: '',
     startPrice: 0,

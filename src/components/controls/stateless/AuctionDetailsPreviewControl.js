@@ -51,10 +51,9 @@ const buttonContainerStyle = {
 
 const AuctionDetailsPreviewControl = ({auctionItemDraft, isBusy, onModifyRequired, onPublishRequired}) => {
   let autoPlay = false;
-
-  let carouselItems = auctionItemDraft.imageUrls.map(imageUrl => {
+  let carouselItems = auctionItemDraft.images.map(image => {
     return {
-      src: imageUrl,
+      src: image.preview,
       caption: ''
     };
   });
@@ -75,6 +74,11 @@ const AuctionDetailsPreviewControl = ({auctionItemDraft, isBusy, onModifyRequire
         <Row style={contentRowStyle}>
           <UncontrolledCarousel items={carouselItems}
                                 ride={autoPlay}/>
+          <div style={chapterStyle}>
+            <CardSubtitle style={chapterTitleStyle}>Lifecycle</CardSubtitle>
+            <CardText style={chapterBodyStyle}>Auction starts at {auctionItemDraft.auctionStart}</CardText>
+            <CardText style={chapterBodyStyle}>Auction ends at {auctionItemDraft.auctionEnd}</CardText>
+          </div>
           <div style={chapterStyle}>
             <CardSubtitle style={chapterTitleStyle}>Description</CardSubtitle>
             <CardText style={chapterBodyStyle}>{auctionItemDraft.description}</CardText>

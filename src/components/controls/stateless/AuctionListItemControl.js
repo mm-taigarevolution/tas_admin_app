@@ -70,7 +70,7 @@ const AuctionListItemControl = ({auctionItem}) => {
     render() {
       let numberOfBids = auctionItem.bids.length;
       let currentPrice = auctionItem.currentPrice;
-      let auctionItemImg = auctionItem.imageUrls.length > 0 ? auctionItem.imageUrls[0] : null;
+      let auctionItemImg = auctionItem.images.length > 0 ? auctionItem.images[0] : null;
       let active = new Date() < new Date(auctionItem.auctionEnd);
 
       return (

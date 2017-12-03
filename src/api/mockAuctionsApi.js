@@ -6,7 +6,7 @@ import delay from '../common/delay';
 const auctionItems = [
   {
     id: "1",
-    imageUrls: ["http://kotisivukone.fi/files/astiataivas.tarjoaa.fi/Arabia/Maitokannut_soppaskoolit_kastikekannut/ae030.jpg", "https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg"],
+    images: ["http://kotisivukone.fi/files/astiataivas.tarjoaa.fi/Arabia/Maitokannut_soppaskoolit_kastikekannut/ae030.jpg", "https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg"],
     title: "Arabia milk can",
     description: "Unused can. It's a pleasure to drink heavy cognac snaps with this!",
     startPrice: 0,
@@ -24,7 +24,7 @@ const auctionItems = [
   },
   {
     id: "2",
-    imageUrls: ["https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg", "http://www.gameberry.net/kannet/1578.jpg", "http://kotisivukone.fi/files/astiataivas.tarjoaa.fi/Arabia/Maitokannut_soppaskoolit_kastikekannut/ae030.jpg"],
+    images: ["https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg", "http://www.gameberry.net/kannet/1578.jpg", "http://kotisivukone.fi/files/astiataivas.tarjoaa.fi/Arabia/Maitokannut_soppaskoolit_kastikekannut/ae030.jpg"],
     title: "Caesar's coffee pot",
     description: "Unused coffee pot. It's a pleasure to cook kahlua with this!",
     startPrice: 0,
@@ -42,7 +42,7 @@ const auctionItems = [
   },
   {
     id: "3",
-    imageUrls: ["http://www.gameberry.net/kannet/1578.jpg", "https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg"],
+    images: ["http://www.gameberry.net/kannet/1578.jpg", "https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg"],
     title: "Donkey Kong console",
     description: "Classic console. In great condition.",
     startPrice: 50,
@@ -60,7 +60,7 @@ const auctionItems = [
   },
   {
     id: "4",
-    imageUrls: ["http://www.suomenantiikki.fi/images/4591%20lasi%2014.jpg", "https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg"],
+    images: ["http://www.suomenantiikki.fi/images/4591%20lasi%2014.jpg", "https://scontent-dft4-1.cdninstagram.com/t51.2885-15/s480x480/e35/14676626_169921290137198_1808913596554412032_n.jpg"],
     title: "Set of Iittala glasses",
     description: "Unused set of Iittala glasses. It's a pleasure to drink wind-light cognac snaps with these!",
     startPrice: 100,
@@ -99,7 +99,6 @@ class AuctionsApi {
   static putAuctionItemDraft(item, admin) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        debugger;
         let newItem = Object.assign({}, item);
         newItem.updated = new Date().toString();
         newItem.updatedBy = admin.adminId.toString();
@@ -113,8 +112,6 @@ class AuctionsApi {
       setTimeout(() => {
         let newItem = Object.assign({}, item);
         newItem.id = Math.floor((Math.random() * 100000000) + 1).toString(); // bad but enough for mock purposes
-        newItem.auctionStart = new Date().toString();
-        newItem.auctionEnd = new Date().toString();
         newItem.createdBy = admin.adminId.toString();
         newItem.created = new Date().toString();
         newItem.updated = new Date().toString();

@@ -25,13 +25,11 @@ class ManageAuctionPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      auctionItemDraft: {id:''}
+      auctionItemDraft: {id:'', images: []}
     };
 
     this.onTitleChanged = this.onTitleChanged.bind(this);
-    this.onImageSelected = this.onImageSelected.bind(this);
-    this.onInvalidImageSelected = this.onInvalidImageSelected.bind(this);
-    this.onImageRemoved = this.onImageRemoved.bind(this);
+    this.onImageDropped = this.onImageDropped.bind(this);
     this.onDescriptionChanged = this.onDescriptionChanged.bind(this);
     this.onStartPriceChanged = this.onStartPriceChanged.bind(this);
     this.onMinimumBidChanged = this.onMinimumBidChanged.bind(this);
@@ -76,16 +74,19 @@ class ManageAuctionPage extends React.Component {
     this.setState({auctionItemDraft: draft });
   }
 
-  onImageSelected(e) {
-    // TODO: add implementation
-  }
+  onImageDropped(accepted, rejected) {
+    let draft = Object.assign({}, this.state.auctionItemDraft);
 
-  onInvalidImageSelected(e) {
-    // TODO: add implementation
-  }
-
-  onImageRemoved(e) {
-    // TODO: add implementation
+    if(accepted.length > 0) {
+      let images = Object.assign([], draft.images);
+      accepted.map(function(item) {
+        // TODO: check that image does not exist in the array
+        // TODO: this will change when auto upload will be taken into use
+        images.push(Object.assign({}, item));
+      });
+      draft.images = images;
+      this.setState({auctionItemDraft: draft });
+    }
   }
 
   onDescriptionChanged(e) {
@@ -114,13 +115,13 @@ class ManageAuctionPage extends React.Component {
 
   onAuctionStartDateChanged(e) {
     let draft = Object.assign({}, this.state.auctionItemDraft);
-    draft.auctionStart = e.toISOString();
+    draft.auctionStart = e;
     this.setState({auctionItemDraft: draft });
   }
 
   onAuctionEndDateChanged(e) {
     let draft = Object.assign({}, this.state.auctionItemDraft);
-    draft.auctionEnd = e.toISOString();
+    draft.auctionEnd = e;
     this.setState({auctionItemDraft: draft });
   }
 
@@ -206,9 +207,7 @@ class ManageAuctionPage extends React.Component {
                     <AuctionDetailsControl auctionItemDraft={auctionItemDraft}
                                            isBusy={isBusy}
                                            onTitleChanged={this.onTitleChanged}
-                                           onImageSelected={this.onImageSelected}
-                                           onInvalidImageSelected={this.onInvalidImageSelected}
-                                           onImageRemoved={this.onImageRemoved}
+                                           onImageDropped={this.onImageDropped}
                                            onDescriptionChanged={this.onDescriptionChanged}
                                            onStartPriceChanged={this.onStartPriceChanged}
                                            onMinimumBidChanged={this.onMinimumBidChanged}

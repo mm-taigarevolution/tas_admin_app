@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormGroup, Label, Col, InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
-import ImageFileSelector from "react-image-select-component";
-import DatePicker from 'react-datepicker';
-import '../../../../node_modules/react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-bootstrap-date-picker';
 import moment from 'moment';
+import Dropzone from 'react-dropzone'
+import Gallery from 'react-grid-gallery';
 
 const largeFieldStyle = {
   minHeight: 300
@@ -28,9 +28,7 @@ const buttonRowStyle = {
 const AuctionDetailsControl = ({auctionItemDraft,
                                 isBusy,
                                 onTitleChanged,
-                                onImageSelected,
-                                onInvalidImageSelected,
-                                onImageRemoved,
+                                onImageDropped,
                                 onDescriptionChanged,
                                 onStartPriceChanged,
                                 onMinimumBidChanged,
@@ -47,10 +45,15 @@ const AuctionDetailsControl = ({auctionItemDraft,
    let minStartPrice = 0;
    let minBidStep = 1;
    let minStep = 1;
-   let startDate = moment(auctionItemDraft.auctionStart).startOf('day');
-   let endDate = moment(auctionItemDraft.auctionEnd).startOf('day');
-   let startDateEditDisabled = startDate < moment().startOf('day');
-
+   let images = auctionItemDraft.images.map(image => {
+     return {
+       src: image.preview,
+       thumbnail: image.preview,
+       thumbnailWidth: 100,
+       thumbnailHeight: 80,
+       caption: ''
+     };
+   });
    return (
      <Form>
       <FormGroup row>
@@ -65,30 +68,47 @@ const AuctionDetailsControl = ({auctionItemDraft,
         </Col>
       </FormGroup>
       <FormGroup row>
-        <Label for="imageFileSelector" sm={3}>Images</Label>
+        <Label for="imageDropZone" sm={3}>Image dropzone</Label>
         <Col sm={9}>
-          <ImageFileSelector id="imageFileSelector"
-                             onSelect={onImageSelected}
-                             onInvalidImage={onInvalidImageSelected}
-                             onRemoveImage={onImageRemoved}/>
+          <Dropzone id="imageDropZone"
+                    accept="image/jpeg, image/png"
+                    onDrop={onImageDropped}>
+            <div style={{padding:'5px'}}>
+              <p>Click here to select images for the auction. Drop also supported.</p>
+              <p>Only *.jpeg and *.png images will be accepted.</p>
+              <p>NOTE! First image will be the main image for auction.</p>
+            </div>
+          </Dropzone>
         </Col>
       </FormGroup>
       <FormGroup row>
-        <Label for="itemDescription" sm={3}>Description</Label>
+        <Label for="imageList" sm={3}>Dropped images</Label>
         <Col sm={9}>
-          <Input id="itemDescription"
-                 type="textarea"
-                 style={largeFieldStyle}
-                 placeholder="Enter description..."
-                 disabled={isBusy}
-                 value={auctionItemDraft.description}
-                 onChange={onDescriptionChanged}/>
-
+          <Gallery images={images}
+                   enableImageSelection={false}/>
         </Col>
       </FormGroup>
       <FormGroup row>
-        <Label for="startPrice" sm={6}>Start price</Label>
-        <Col sm={6}>
+        <Label for="auctionStartDate" sm={3}>Start date</Label>
+        <Col sm={9}>
+          <DatePicker id="auctionStartDate"
+                      placeholder="Select..."
+                      value={auctionItemDraft.auctionStart}
+                      onChange={onAuctionStartDateChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="auctionEndDate" sm={3}>End date</Label>
+        <Col sm={9}>
+          <DatePicker id="auctionEndDate"
+                      placeholder="Select..."
+                      value={auctionItemDraft.auctionEnd}
+                      onChange={onAuctionEndDateChanged}/>
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="startPrice" sm={3}>Start price</Label>
+        <Col sm={9}>
           <InputGroup>
             <Input id="startPrice"
                    type="number"
@@ -102,8 +122,8 @@ const AuctionDetailsControl = ({auctionItemDraft,
         </Col>
       </FormGroup>
       <FormGroup row>
-        <Label for="minimumBidStep" sm={6}>Minimum bid</Label>
-        <Col sm={6}>
+        <Label for="minimumBidStep" sm={3}>Minimum bid</Label>
+        <Col sm={9}>
           <InputGroup>
             <Input id="minimumBidStep"
                    type="number"
@@ -117,24 +137,16 @@ const AuctionDetailsControl = ({auctionItemDraft,
         </Col>
       </FormGroup>
       <FormGroup row>
-        <Label for="auctionStartDate" sm={3}>Start date</Label>
+        <Label for="itemDescription" sm={3}>Description</Label>
         <Col sm={9}>
-          <DatePicker id="auctionStartDate"
-                      todayButton={"Today"}
-                      disabled={startDateEditDisabled}
-                      minDate={moment().startOf('day')}
-                      maxDate={endDate}
-                      selected={startDate}
-                      onChange={onAuctionStartDateChanged}/>
-        </Col>
-      </FormGroup>
-      <FormGroup row>
-        <Label for="auctionEndDate" sm={3}>End date</Label>
-        <Col sm={9}>
-          <DatePicker id="auctionEndDate"
-                      minDate={startDate.startOf('day').add(1, "days")}
-                      selected={endDate}
-                      onChange={onAuctionEndDateChanged}/>
+          <Input id="itemDescription"
+                 type="textarea"
+                 style={largeFieldStyle}
+                 placeholder="Enter description..."
+                 disabled={isBusy}
+                 value={auctionItemDraft.description}
+                 onChange={onDescriptionChanged}/>
+
         </Col>
       </FormGroup>
       <FormGroup row>
@@ -211,9 +223,7 @@ AuctionDetailsControl.propTypes = {
   auctionItemDraft: PropTypes.object.isRequired,
   isBusy: PropTypes.bool.isRequired,
   onTitleChanged: PropTypes.func.isRequired,
-  onImageSelected: PropTypes.func.isRequired,
-  onInvalidImageSelected: PropTypes.func.isRequired,
-  onImageRemoved: PropTypes.func.isRequired,
+  onImageDropped: PropTypes.func.isRequired,
   onDescriptionChanged: PropTypes.func.isRequired,
   onStartPriceChanged: PropTypes.func.isRequired,
   onMinimumBidChanged: PropTypes.func.isRequired,
